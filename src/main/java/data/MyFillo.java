@@ -23,4 +23,14 @@ public class MyFillo {
 
         return null;
     }
+
+    public Recordset update(String strPath, String strQuery) throws FilloException {
+        Connection connection = fillo.getConnection(strPath);
+        connection.executeUpdate(strQuery);
+
+        connection.close();
+        return null;
+    }
+
+
 }

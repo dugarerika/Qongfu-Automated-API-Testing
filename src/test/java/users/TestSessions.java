@@ -1,11 +1,17 @@
 package users;
 
+import com.codoid.products.exception.FilloException;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class TestSessions {
+import java.net.URISyntaxException;
+
+public class TestSessions extends BaseTest{
+
+
 
     @Test
     public void testResponseCode(){

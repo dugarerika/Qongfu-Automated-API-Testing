@@ -1,13 +1,13 @@
 package users;
 
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import io.restassured.response.Response;
+import org.testng.annotations.Test;
+import io.restassured.RestAssured;
 import org.json.simple.JSONObject;
 import org.testng.Assert;
-import org.testng.annotations.Test;
 
-public class TetRegisterUser {
+public class TestFriends extends BaseTest{
 
     @Test
     public void testResponseCode(){

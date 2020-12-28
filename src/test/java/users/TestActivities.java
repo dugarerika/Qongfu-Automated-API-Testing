@@ -1,35 +1,100 @@
 package users;
 
+import com.codoid.products.exception.FilloException;
+import com.codoid.products.fillo.Recordset;
 import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.json.simple.JSONObject;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class TestActivities {
+import java.net.URISyntaxException;
 
+import static io.restassured.config.EncoderConfig.encoderConfig;
 
-    @Test
-    public void testResponseCode(){
-        Response resp= RestAssured.get("https://staging-api.qongfu.com/api/users");
+public class TestActivities extends BaseTest {
 
-        int code=resp.getStatusCode();
+    @DataProvider(name = "data_provider")
+    public Object [][] dataProviderMethod() {
 
-        System.out.println("Status code is" +code);
-
-        Assert.assertEquals(code, 200);
-
+        return new Object [][] {{0},{1},{2},{3}};
     }
 
-    @Test
-    public void testBody(){
-        Response resp= RestAssured.get("https://staging-api.qongfu.com/api/users");
+    @Test(dataProvider = "data_provider")
+    public void GetMyActivities(int ID) throws FilloException, URISyntaxException {
 
-        String data=resp.asString();
+        String strQuery1 = "SELECT * FROM GetMyActivities WHERE ID = '" + ID + "'";
+        Recordset recordset = objDataDriven.select(strPath,strQuery1);
 
-        System.out.println("Data is " + data);
+        RestAssured.config = RestAssured.config().encoderConfig(encoderConfig().appendDefaultContentCharsetToContentTypeIfUndefined(false));
+        Response resp = RestAssured.given()
+                .header("Accept", "application/json")
+                .header("Content-Type","application/json")
+                .header("Authorization", "Bearer" + objData.api_token(recordset))
+                .body(objData.fillUsername(recordset)).baseUri(baseURI)
+                .get(objData.fillBasePath(recordset));
 
-        System.out.println("Response time" + resp.getTime());
+        resp.prettyPrint();
+        System.out.println("Bearer" + objData.api_token(recordset));
+        int code = resp.getStatusCode();
+        int expected = objData.fillCode(recordset);
+
+        Assert.assertEquals(code,expected);
+        System.out.println(resp.getStatusLine());
+
+        System.out.println("Status code is " +code);
+    }
+
+    @Test(dataProvider = "data_provider")
+    public void CreateActivities(int ID) throws FilloException, URISyntaxException {
+
+        String strQuery1 = "SELECT * FROM CreateActivity WHERE ID = '" + ID + "'";
+        Recordset recordset = objDataDriven.select(strPath,strQuery1);
+
+        RestAssured.config = RestAssured.config().encoderConfig(encoderConfig().appendDefaultContentCharsetToContentTypeIfUndefined(false));
+        Response resp = RestAssured.given()
+                .header("Accept", "application/json")
+                .header("Content-Type","application/json")
+                .header("Authorization", "Bearer" + objData.api_token(recordset))
+                .body(objData.fillUsername(recordset)).baseUri(baseURI)
+                .post(objData.fillBasePath(recordset));
+
+        resp.prettyPrint();
+        System.out.println("Bearer" + objData.api_token(recordset));
+        int code = resp.getStatusCode();
+        int expected = objData.fillCode(recordset);
+
+        Assert.assertEquals(code,expected);
+        System.out.println(resp.getStatusLine());
+
+        System.out.println("Status code is " +code);
+    }
+
+    @Test(dataProvider = "data_provider")
+    public void UpdateActivities(int ID) throws FilloException, URISyntaxException {
+
+        String strQuery1 = "SELECT * FROM UpdateActivity WHERE ID = '" + ID + "'";
+        Recordset recordset = objDataDriven.select(strPath,strQuery1);
+
+        RestAssured.config = RestAssured.config().encoderConfig(encoderConfig().appendDefaultContentCharsetToContentTypeIfUndefined(false));
+        Response resp = RestAssured.given()
+                .header("Accept", "application/json")
+                .header("Content-Type","application/json")
+                .header("Authorization", "Bearer" + objData.api_token(recordset))
+                .body(objData.fillUsername(recordset)).baseUri(baseURI)
+                .post(objData.fillBasePath(recordset));
+
+        resp.prettyPrint();
+        System.out.println("Bearer" + objData.api_token(recordset));
+        int code = resp.getStatusCode();
+        int expected = objData.fillCode(recordset);
+
+        Assert.assertEquals(code,expected);
+        System.out.println(resp.getStatusLine());
+
+        System.out.println("Status code is " +code);
     }
 }
