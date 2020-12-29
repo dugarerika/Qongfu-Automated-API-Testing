@@ -13,11 +13,6 @@ import org.testng.Assert;
 
 public class TestUsers extends BaseTest{
 
-    @DataProvider(name = "data_provider")
-    public Object [][] dataProviderMethod() {
-
-        return new Object [][] {{0},{1},{2},{3}};
-    }
 
     @Override
     public void register(int ID) throws FilloException, URISyntaxException {
@@ -29,18 +24,19 @@ public class TestUsers extends BaseTest{
         super.authentication(ID);
     }
 
-    @Test(dataProvider = "data_provider")
+    @Test(priority = 2, dataProvider = "cero_three")
     public void checkUsername(int ID) throws FilloException, URISyntaxException {
 
         String strQuery1 = "SELECT * FROM CheckUsername WHERE ID = '" + ID + "'";
         Recordset recordset = objDataDriven.select(strPath,strQuery1);
 
+        objData.fillHeader(recordset);
         RestAssured.config = RestAssured.config().encoderConfig(encoderConfig().appendDefaultContentCharsetToContentTypeIfUndefined(false));
         Response resp = RestAssured.given()
                 .header("X-Requested-With", "XMLHttpRequest")
                 .header("Accept", "application/json")
                 .header("Content-Type","application/json")
-                .header("Authorization", "Bearer" + objData.api_token(recordset))
+                .header("Authorization", "Bearer " + objData.api_token(recordset))
                 .body(objData.fillUsername(recordset)).baseUri(baseURI)
                 .post(objData.fillBasePath(recordset));
 
@@ -60,18 +56,19 @@ public class TestUsers extends BaseTest{
         }
     }
 
-    @Test(dataProvider = "data_provider")
+    @Test(priority = 3,dataProvider = "cero_three")
     public void updateUsername(int ID) throws FilloException, URISyntaxException {
 
         String strQuery1 = "SELECT * FROM UpdateUsername WHERE ID = '" + ID + "'";
         Recordset recordset = objDataDriven.select(strPath,strQuery1);
 
+        objData.fillHeader(recordset);
         RestAssured.config = RestAssured.config().encoderConfig(encoderConfig().appendDefaultContentCharsetToContentTypeIfUndefined(false));
         Response resp = RestAssured.given()
                 .header("X-Requested-With", "XMLHttpRequest")
                 .header("Accept", "application/json")
                 .header("Content-Type","application/json")
-                .header("Authorization", "Bearer" + objData.api_token(recordset))
+                .header("Authorization", "Bearer " + objData.api_token(recordset))
                 .body(objData.fillUsername(recordset)).baseUri(baseURI)
                 .post(objData.fillBasePath(recordset));
 
@@ -88,5 +85,28 @@ public class TestUsers extends BaseTest{
         if( code == 200){
             System.out.println("It is the token" +" "+ api_token);
         }
+    }
+
+    @Test(priority = 4, dataProvider = "cero_one")
+    public void logOut(int ID) throws FilloException, URISyntaxException {
+
+        String strQuery1 = "SELECT * FROM LogOut WHERE ID = '" + ID + "'";
+        Recordset recordset = objDataDriven.select(strPath,strQuery1);
+
+        objData.fillHeader(recordset);
+        Response response = RestAssured.given()
+                .header("Accept", "application/json")
+                .header("Content-Type","application/json")
+                .header("Authorization", "Bearer " + objData.api_token(recordset))
+                .baseUri(baseURI)
+                .get(objData.fillBasePath(recordset));
+
+        int code = response.getStatusCode();
+        int expected = objData.fillCode(recordset);
+
+        response.prettyPrint();
+        System.out.println(response.getStatusLine());
+        System.out.println("Bearer" + objData.api_token(recordset));
+        Assert.assertEquals(code,expected);
     }
 }

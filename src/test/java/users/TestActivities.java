@@ -17,13 +17,7 @@ import static io.restassured.config.EncoderConfig.encoderConfig;
 
 public class TestActivities extends BaseTest {
 
-    @DataProvider(name = "data_provider")
-    public Object [][] dataProviderMethod() {
-
-        return new Object [][] {{0},{1},{2},{3}};
-    }
-
-    @Test(dataProvider = "data_provider")
+    @Test(priority = 0, dataProvider = "cero_three")
     public void GetMyActivities(int ID) throws FilloException, URISyntaxException {
 
         String strQuery1 = "SELECT * FROM GetMyActivities WHERE ID = '" + ID + "'";
@@ -48,7 +42,7 @@ public class TestActivities extends BaseTest {
         System.out.println("Status code is " +code);
     }
 
-    @Test(dataProvider = "data_provider")
+    @Test(priority = 0, dataProvider = "data_provider")
     public void CreateActivities(int ID) throws FilloException, URISyntaxException {
 
         String strQuery1 = "SELECT * FROM CreateActivity WHERE ID = '" + ID + "'";
@@ -73,7 +67,7 @@ public class TestActivities extends BaseTest {
         System.out.println("Status code is " +code);
     }
 
-    @Test(dataProvider = "data_provider")
+    @Test(priority = 0, dataProvider = "data_provider")
     public void UpdateActivities(int ID) throws FilloException, URISyntaxException {
 
         String strQuery1 = "SELECT * FROM UpdateActivity WHERE ID = '" + ID + "'";

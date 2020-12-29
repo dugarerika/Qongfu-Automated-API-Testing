@@ -8,10 +8,15 @@ import java.net.URI;
 
 public class FillData {
 
-    public String fillAuth(Recordset objRecordset) throws FilloException {
+    public void fillHeader(Recordset objRecordset) throws FilloException {
 
         System.out.println(objRecordset.getField("caseNumber"));
         System.out.println(objRecordset.getField("case"));
+
+
+    }
+
+    public String fillAuth(Recordset objRecordset) throws FilloException {
 
         JSONObject json= new JSONObject();
         json.put("email",objRecordset.getField("email"));
@@ -24,9 +29,6 @@ public class FillData {
 
     public String fillReg(Recordset objRecordset) throws FilloException {
 
-        System.out.println(objRecordset.getField("caseNumber"));
-        System.out.println(objRecordset.getField("case"));
-
         JSONObject json= new JSONObject();
         json.put("fullname", objRecordset.getField("fullname"));
         json.put("email",objRecordset.getField("email"));
@@ -38,9 +40,6 @@ public class FillData {
     }
 
     public String fillUsername(Recordset objRecordset) throws FilloException {
-
-        System.out.println(objRecordset.getField("caseNumber"));
-        System.out.println(objRecordset.getField("case"));
 
         JSONObject json= new JSONObject();
         json.put("username", objRecordset.getField("username"));
